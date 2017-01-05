@@ -85,7 +85,15 @@ namespace GLStudio
 				}
 			}
 		}
-
+		void exec_quit(object sender, EventArgs e){
+			Quit (null, null);
+		}
+		void exec_explorer(object sender, EventArgs e){
+			CrowInterface.LoadInterface ("#GLStudio.ui.GLExplorer.iml").DataSource = this;
+		}
+		void exec_crowPerfs(object sender, EventArgs e){
+			CrowInterface.LoadInterface ("#GLStudio.ui.perfMeasures.crow").DataSource = this;
+		}
 		#endregion
 
 		#region Game win overrides
@@ -151,7 +159,9 @@ namespace GLStudio
 		{
 			if (e.Key == OpenTK.Input.Key.Escape) 
 				Quit (null, null);
-			if (e.Key == OpenTK.Input.Key.F7) 
+			else if (e.Key == OpenTK.Input.Key.F6) 
+				CrowInterface.LoadInterface ("#GLStudio.ui.GLExplorer.iml").DataSource = this;
+			else if (e.Key == OpenTK.Input.Key.F7) 
 				CrowInterface.LoadInterface ("#GLStudio.ui.perfMeasures.crow").DataSource = this;			
 		}
 

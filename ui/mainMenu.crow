@@ -1,6 +1,24 @@
 ﻿<?xml version="1.0"?>
-<VerticalStack Width="30%" Height="100%" HorizontalAlignment="Left" Background="0.7,0.7,0.7,0.5">
-	<TextBox Text="{²RootDirectory}"/>
-	<DirectoryView Name="dv" CurrentDirectory="{²RootDirectory}"
-		SelectedItemChanged="rootDir_SelectedItemChanged"/>
-</VerticalStack>
+<Menu>
+	<MenuItem Caption="File">
+		<MenuItem Caption="New" Execute="onNew"/>
+		<MenuItem Caption="Open"/>
+		<MenuItem Caption="Save"/>
+		<MenuItem Caption="Quit" Execute="exec_quit"/>
+	</MenuItem>
+	<MenuItem Caption="Views">
+		<MenuItem Caption="Explorer" Execute="exec_explorer"/>
+		<MenuItem Caption="Crow Perfs" Execute="exec_crowPerfs"/>
+		<MenuItem Caption="Paste"/>
+		<MenuItem Caption="Special"/>
+		<MenuItem Caption="Special2">
+			<MenuItem Caption="Cut"/>
+			<MenuItem Caption="Copy"/>
+			<MenuItem Caption="Paste"/>
+		</MenuItem>
+	</MenuItem>
+	<MenuItem Caption="Help">
+		<MenuItem Caption="About"/>
+		<MenuItem Caption="Help"/>
+	</MenuItem>
+</Menu>

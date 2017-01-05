@@ -12,7 +12,9 @@
 							Visible="{./IsExpandable}"
 							SvgSub="{./IsExpanded}"/>
 					</Container>
-					<Label Text="{./Caption}"/>
+					<Label Text="{./Caption}" Width="Stretched"/>
+					<Label Text="Mean:"/>
+					<Label Text="{mean}" Style="FpsDisp" Width="Fit"/>
 				</HorizontalStack>
 				<Container Name="Content" Visible="false"/>
 			</VerticalStack>
@@ -26,10 +28,6 @@
 		<HorizontalStack>
 			<Label Text="Minimum:" Style="FpsLabel"/>
 			<Label Text="{minimum}" Style="FpsDisp"/>
-		</HorizontalStack>
-		<HorizontalStack>
-			<Label Text="Mean:" Style="FpsLabel"/>
-			<Label Text="{mean}" Style="FpsDisp"/>
 		</HorizontalStack>
 		<HorizontalStack>
 			<Label Text="Maximum:" Style="FpsLabel"/>

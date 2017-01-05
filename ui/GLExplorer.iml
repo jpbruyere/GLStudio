@@ -1,0 +1,8 @@
+﻿<?xml version="1.0"?>
+<Window Width="30%" Height="60%" HorizontalAlignment="Left">
+	<VerticalStack Margin="2">
+		<TextBox Text="{²RootDirectory}"/>
+		<DirectoryView Name="dv" CurrentDirectory="{²RootDirectory}"
+			SelectedItemChanged="rootDir_SelectedItemChanged"/>
+	</VerticalStack>
+</Window>

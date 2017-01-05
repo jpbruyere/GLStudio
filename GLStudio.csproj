@@ -32,7 +32,6 @@
   <ItemGroup>
     <None Include="OpenTK.dll.config" />
     <None Include="packages.config" />
-    <None Include="Default.style" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
@@ -88,6 +87,8 @@
     <EmbeddedResource Include="ui\mainMenu.crow" />
     <EmbeddedResource Include="ui\perfMeasures.crow" />
     <EmbeddedResource Include="ui\perfMsr.crow" />
+    <EmbeddedResource Include="ui\GLExplorer.iml" />
+    <EmbeddedResource Include="Default.style" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="lib\Crow\Crow.csproj">
