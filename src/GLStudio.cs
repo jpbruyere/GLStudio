@@ -10,9 +10,20 @@ using OpenTK.Graphics.OpenGL;
 
 using Crow;
 using GGL;
+using Tetra.DynamicShading;
+using System.Threading;
 
 namespace GLStudio
 {
+	public struct TexturedMeshData
+	{
+		public Vector2[] TexCoords;
+
+		public TexturedMeshData(Vector2[] _texCoord)
+		{
+			TexCoords = _texCoord;
+		}
+	}
 	class GLStudio : OpenTKGameWindow
 	{
 		[STAThread]
@@ -37,18 +48,44 @@ namespace GLStudio
 			}
 		} 
 
-		GGL.vaoMesh vao_mesh;
+		object loadingMutex = new object();
+		volatile bool meshLoadingInProgress = false;
+		Mesh<TexturedMeshData> new_mesh;
+
+		MeshVAO<TexturedMeshData> vaoTest;
 		Tetra.Texture texture;
 
 		void initGL(){
 			GL.Enable (EnableCap.CullFace);
+			GL.CullFace (CullFaceMode.Back);
+			GL.Enable(EnableCap.DepthTest);
+			GL.DepthFunc(DepthFunction.Less);
 			GL.Enable (EnableCap.Blend);
 			GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
-			vao_mesh = GGL.vaoMesh.Load(@"/devel/Chess/Meshes/queen.obj");
 
 			texture = Tetra.Texture.Load (Crow.Configuration.Get<string> ("CurrentTexturePath"));
-			vao_mesh = GGL.vaoMesh.Load(Crow.Configuration.Get<string> ("CurrentOBJPath"));
+
+			LoadMesh(Crow.Configuration.Get<string> ("CurrentOBJPath"));
+
 			UpdateViewMatrix();
+
+		}
+
+		void LoadMesh(string path){
+			if (meshLoadingInProgress) {
+				Console.WriteLine ("Cancel, Loading already in progress");
+				return;
+			}
+			Thread t = new Thread(() => loadNewMeshThread(path));
+			t.IsBackground = true;
+			t.Start ();
+		}
+
+		void loadNewMeshThread(string path){			
+			lock (loadingMutex) {
+				meshLoadingInProgress = true;
+				new_mesh = Mesh<TexturedMeshData>.Load (path);
+			}
 		}
 
 		#region UI
@@ -69,8 +106,8 @@ namespace GLStudio
 			if (fi == null)
 				return;
 			if (string.Equals (fi.Extension, ".obj", StringComparison.OrdinalIgnoreCase)) {
-				vao_mesh = GGL.vaoMesh.Load (fi.FullName);
 				Crow.Configuration.Set ("CurrentOBJPath", fi.FullName);
+				LoadMesh (fi.FullName);
 			}else if (string.Equals (fi.Extension, ".png", StringComparison.OrdinalIgnoreCase)||
 				string.Equals (fi.Extension, ".gif", StringComparison.OrdinalIgnoreCase)||
 				string.Equals (fi.Extension, ".bmp", StringComparison.OrdinalIgnoreCase)||
@@ -107,20 +144,32 @@ namespace GLStudio
 		protected override void OnUpdateFrame (OpenTK.FrameEventArgs e)
 		{
 			base.OnUpdateFrame (e);
+			if (Monitor.TryEnter (loadingMutex)) {
+				if (new_mesh != null) {
+					vaoTest = new MeshVAO<TexturedMeshData> (new_mesh);
+					new_mesh = null;
+					meshLoadingInProgress = false;
+				}
+				Monitor.Exit (loadingMutex);
+			}
 		}
 		public override void OnRender (FrameEventArgs e)
 		{
 			base.OnRender (e);
-			if (vao_mesh == null)
+			if (vaoTest == null)
 				return;
 			shader.Enable ();
 			shader.SetMVP(modelview * projection);
 
 			GL.BindTexture (TextureTarget.Texture2D, texture);
-			vao_mesh.Render (BeginMode.Triangles);
+			vaoTest.Render (BeginMode.Triangles);
 			GL.BindTexture (TextureTarget.Texture2D, 0);
 		}
-
+		protected override void OnResize (EventArgs e)
+		{
+			base.OnResize (e);
+			UpdateViewMatrix ();
+		}
 		#endregion
 
 
@@ -175,8 +224,15 @@ namespace GLStudio
 			if (e.XDelta != 0 || e.YDelta != 0)
 			{
 				if (e.Mouse.MiddleButton == OpenTK.Input.ButtonState.Pressed) {
-					vLook = vLook.Transform (Matrix4.CreateRotationZ(-(float)e.XDelta * RotationSpeed));
-					vLook = vLook.Transform (Matrix4.CreateRotationX(-(float)e.YDelta * RotationSpeed));
+					Vector3 v = new Vector3 (
+						Vector2.Normalize (vLook.Xy.PerpendicularLeft));
+					vLook = vLook.Transform( 
+						Matrix4.CreateRotationZ (-e.XDelta * RotationSpeed) *
+						Matrix4.CreateFromAxisAngle (v, -e.YDelta * RotationSpeed));
+//
+//					vLook = vLook.Transform (Matrix4.CreateRotationZ(-(float)e.XDelta * RotationSpeed));
+//					vLook = vLook.Transform (Matrix4.CreateFromAxisAngle(Vector2.per.Cross(vLook,
+//						-(float)e.YDelta * RotationSpeed));
 					vLook.Normalize();
 					UpdateViewMatrix ();
 				}else if (e.Mouse.LeftButton == OpenTK.Input.ButtonState.Pressed) {
