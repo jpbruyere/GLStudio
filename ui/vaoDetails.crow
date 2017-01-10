@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<Window Title="Mesh View" Width="300" Height="160" Closing="onMeshViewClose"
+	Style="MDIWin">
+	<VerticalStack VerticalAlignment="Top" Margin="5">
+		<Label Text="{../../Mesh.MeshPath}" Font="droid bold, 10" Margin="3"/>
+		<HorizontalStack>
+			<VerticalStack Width="40%" Margin="2">
+				<HorizontalStack Height="Fit" >
+					<Label Text="Verts:" Style="FpsLabel"/>
+					<Label Text="{../../../Mesh.VertCount}" Style="FpsDisp"/>
+				</HorizontalStack>
+				<HorizontalStack Height="Fit" >
+					<Label Text="Indices:" Style="FpsLabel"/>
+					<Label Text="{../../../Mesh.IndCount}" Style="FpsDisp"/>
+				</HorizontalStack>
+				<HorizontalStack Height="Fit" >
+					<Label Text="Duplicates:" Style="FpsLabel"/>
+					<Label Text="{../../../Mesh.DupVertCount}" Style="FpsDisp"/>
+				</HorizontalStack>
+				<HorizontalStack Height="Fit" >
+					<Label Text="Loading:" Style="FpsLabel"/>
+					<Label Text="{../../../Mesh.LoadTime}" Style="FpsDisp"/>
+					<Label Text="ms" Style="FpsDisp"/>
+				</HorizontalStack>
+				<CheckBox Caption="Wired" IsChecked="{²../../Mesh.Wireframe}"/>
+				<Button Caption="Binary Export" MouseClick="../../Mesh.onExportMesh_MouseClick"/>
+			</VerticalStack>
+			<MeshViewer Focusable="true" Name="Mesh" Background="Black" Width="60%"/>
+		</HorizontalStack>
+	</VerticalStack>
+</Window>

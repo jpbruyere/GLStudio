@@ -67,6 +67,8 @@
   <ItemGroup>
     <Folder Include="src\" />
     <Folder Include="ui\" />
+    <Folder Include="images\" />
+    <Folder Include="Shaders\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="src\GLStudio.cs" />
@@ -82,6 +84,10 @@
     <Compile Include="lib\Crow\Tests\OpenGL\vaoMesh.cs">
       <Link>src\vaoMesh.cs</Link>
     </Compile>
+    <Compile Include="src\Mat4InstancedShader.cs" />
+    <Compile Include="src\Rendering.cs" />
+    <Compile Include="src\MeshViewer.cs" />
+    <Compile Include="Shaders\MeshViewerShader.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="ui\mainMenu.crow" />
@@ -89,6 +95,9 @@
     <EmbeddedResource Include="ui\perfMsr.crow" />
     <EmbeddedResource Include="ui\GLExplorer.iml" />
     <EmbeddedResource Include="Default.style" />
+    <EmbeddedResource Include="images\board3.png" />
+    <EmbeddedResource Include="ui\vaoDetails.crow" />
+    <EmbeddedResource Include="ui\tmpWindow.crow" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="lib\Crow\Crow.csproj">

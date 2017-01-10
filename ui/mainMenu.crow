@@ -8,6 +8,7 @@
 	</MenuItem>
 	<MenuItem Caption="Views">
 		<MenuItem Caption="Explorer" Execute="exec_explorer"/>
+		<MenuItem Caption="Main VAO Stats" Execute="exec_viewVAOStat"/>
 		<MenuItem Caption="Crow Perfs" Execute="exec_crowPerfs"/>
 		<MenuItem Caption="Paste"/>
 		<MenuItem Caption="Special"/>

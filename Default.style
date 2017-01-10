@@ -1,14 +1,17 @@
 ﻿FpsLabel {
-	Width = 50%;
-	Font = droid, 10;
+	Width = Fit;
+	Font = droid bold, 9;
 	Margin = 0;
 	TextAlignment = Center;
-	Background = Onyx;
 }
 FpsDisp {
-	Font = droid bold, 10;
-	Width = 50%;
-	Margin = 0;
-	TextAlignment = Center;
-	Background = Teal;
+	Font = droid, 10;
+	Width = Fit;
+	Margin = 1;
+	TextAlignment = Right;
+	Text = -;
+}
+MDIWin {
+	Template=#GLStudio.ui.tmpWindow.crow;
+	MinimumSize=100,100;
 }
